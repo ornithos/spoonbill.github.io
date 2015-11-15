@@ -74,5 +74,5 @@ gmmSpec <- clsSpecifyModel(multires, clusters = 6:10, noise.pct = 0.1)
 modGMM <- clsGMM(gmmSpec, alpha = 0.2, beta = 0.2)
 ```
 This took about 25 seconds on my computer.
-![alt text](https://github.com/spoonbill/spoonbill.github.io/blob/master/images/clusterGMM1.png "Gaussian Mixture Model Clustering")
-![alt text](https://github.com/spoonbill/spoonbill.github.io/blob/master/images/clusterGMM2.png "Gaussian Mixture Model Noise Filtering")
+![alt text](https://github.com/spoonbill/spoonbill.github.io/blob/master/images/clustersGMM1.png "Gaussian Mixture Model Clustering")
+![alt text](https://github.com/spoonbill/spoonbill.github.io/blob/master/images/clustersGMM2.png "Gaussian Mixture Model Noise Filtering")
