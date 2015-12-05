@@ -6,7 +6,17 @@ A number of years ago I spent some time researching clustering algorithms due to
 
 While non-parametric alternatives exist such as DBSCAN or mean-shift, these are highly sensitive to parameter specification, and higher dimensions suffer from quadratic time. Spectral clustering takes a slightly different approach by acting on the graph Laplacian, but unless approximated is at least quadratic, and one must specify the number of clusters in advance. The algorithm I chose is one called TURN-RES from a [paper](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.7.1966&rep=rep1&type=pdf) by Foss \& Za¨ıane in 2002. The main advantages are that it is a non parametric approach that is (sort-of) parameterless and runs in `O(nlogn)` time. It approximates density estimation by quantizing the space into discrete grid, assigning neighbours to each datapoint in all axis-oriented direction and calculating the number of neighbours within a given distance. For a few unclear details I have taken my best guess, but otherwise the implementation of TURN-RES follows the Foss paper.
 
+## TURN-RES
+Two complementary algorithms are proposed in the Foss paper, TurnCut and TURN-RES. Is TURN an acronym? Who knows. Your guess is as good as mine. Anyway, TURN-RES is the workhorse clustering algorithm which contains a resolution parameter. TurnCut is a line-search like algorithm which seeks to find the 'elbow' or 'knee' of various metrics associated with a clustering result. While the results for the datasets used were apparently strong, I have not found this to be so useful in certain real world datasets. This is in part due to the subjectivity of the task and often a continuum of plausible results over increasing resolution. But perhaps more importantly, one often finds that different clusters have different natural resolutions and a global resolution parameter can never capture all of these. An implementation of TurnCut is not available in the package, instead I have chosen to make the cluster discovery an exploratory process. The clustering objective is not (ultimately) well-posed and here it is the analyst's job to iteratively discover the best cluster assignment.
+
+1) 2D data
+2) Quantize
+3) Order horizontally and glow neighbours
+4)   "   vertically " " "
+5) Show connections between datapoints
+
 ## nectr: Non-Parametric Exploratory Clustering using TURN-RES
+![dead](https://github.com/spoonbill/spoonbill.github.io/images/clsTurnRes.gif "steps of TURN-RES")
 The R-package is called `nectr` and can be found [here](https://github.com/spoonbill/nectr). The following is a simple demonstration of the algorithm on some dummy data. First, we create a 5 cluster fake dataset over 3 dimensions according to the following R script:
 
 ```R
@@ -36,10 +46,10 @@ names(fakeData) <- c("X", "Y", "Z")
 
 We have also added some uniformly distributed noise to make the problem slightly more challenging. The dataset is shown below - we have n = 600,000 datapoints (not all shown!), and d = 3 dimensions.
 
-![alt text](https://github.com/spoonbill/spoonbill.github.io/images/cluster2.png "fake dataset - superimposed clusters")
-![alt text](https://github.com/spoonbill/spoonbill.github.io/images/cluster1.png "fake dataset - as seen by the algorithm.")
+![dead](https://github.com/spoonbill/spoonbill.github.io/images/cluster2.png "fake dataset - superimposed clusters")
+![dead](https://github.com/spoonbill/spoonbill.github.io/images/cluster1.png "fake dataset - as seen by the algorithm.")
 
-The core algorithm TURN-RES requires one parametr - the quantization resolution. The lower the resolution, the more neighbours a datapoint has, which increases the cluster sizes. Since the algorithm is fairly fast, we can scan over multiple resolutions fairly quickly to build a multiresolution cluster object.
+The core algorithm TURN-RES requires one parameter - the quantization resolution. The lower the resolution, the more neighbours a datapoint has, which increases the cluster sizes. Since the algorithm is fairly fast, we can scan over multiple resolutions fairly quickly to build a multiresolution cluster object.
 
 ```R
 library(nectr)
@@ -52,7 +62,7 @@ We can inspect the agglomeration schedule, that is, how the clusters agglomerate
 ```R
 plot(multires)
 ```
-![alt text](https://github.com/spoonbill/spoonbill.github.io/images/agglom.png "plot clsMR object")
+![dead](https://github.com/spoonbill/spoonbill.github.io/images/agglom.png "plot clsMR object")
 
 
 ```R
@@ -64,7 +74,7 @@ plot(multires, c(8,12,13))
 ```R
 plot(multires,6:10)
 ```
-![alt text](https://github.com/spoonbill/spoonbill.github.io/images/pcp_6_10.png "Princpal Component Plot")
+![dead](https://github.com/spoonbill/spoonbill.github.io/images/pcp_6_10.png "Princpal Component Plot")
 
 ```R
 gmmSpec <- clsSpecifyModel(multires, clusters = 6:10, noise.pct = 0.1)
@@ -74,5 +84,5 @@ gmmSpec <- clsSpecifyModel(multires, clusters = 6:10, noise.pct = 0.1)
 modGMM <- clsGMM(gmmSpec, alpha = 0.2, beta = 0.2)
 ```
 This took about 25 seconds on my computer.
-![alt text](https://github.com/spoonbill/spoonbill.github.io/images/clusterGMM1.png "Gaussian Mixture Model Clustering")
-![alt text](https://github.com/spoonbill/spoonbill.github.io/images/clusterGMM2.png "Gaussian Mixture Model Noise Filtering")
+![dead](https://github.com/spoonbill/spoonbill.github.io/images/clusterGMM1.png "Gaussian Mixture Model Clustering")
+![dead](https://github.com/spoonbill/spoonbill.github.io/images/clusterGMM2.png "Gaussian Mixture Model Noise Filtering")
