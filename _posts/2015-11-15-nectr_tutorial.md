@@ -16,7 +16,7 @@ Two complementary algorithms are proposed in the Foss paper, TurnCut and TURN-RE
 5) Show connections between datapoints
 
 ## nectr: Non-Parametric Exploratory Clustering using TURN-RES
-![dead](https://github.com/spoonbill/spoonbill.github.io/images/clsTurnRes.gif "steps of TURN-RES")
+![dead](https://github.com/spoonbill/spoonbill.github.io/blob/master/images/clsTurnRes.gif "steps of TURN-RES")
 The R-package is called `nectr` and can be found [here](https://github.com/spoonbill/nectr). The following is a simple demonstration of the algorithm on some dummy data. First, we create a 5 cluster fake dataset over 3 dimensions according to the following R script:
 
 ```R
