@@ -46,7 +46,8 @@ names(fakeData) <- c("X", "Y", "Z")
 
 We have also added some uniformly distributed noise to make the problem slightly more challenging. The dataset is shown below - we have n = 600,000 datapoints (not all shown!), and d = 3 dimensions.
 
-<center><img src="https://github.com/spoonbill/spoonbill.github.io/blob/master/images/clusters2.png" width="350"> <img src="https://github.com/spoonbill/spoonbill.github.io/blob/master/images/clusters1.png" width="350"></center>
+<img src="https://github.com/spoonbill/spoonbill.github.io/blob/master/images/clusters2.png" width="350" align="middle"> <img src="https://github.com/spoonbill/spoonbill.github.io/blob/master/images/clusters1.png" width="350" align="middle">
+
 The core algorithm TURN-RES requires one parameter - the quantization resolution. The lower the resolution, the more neighbours a datapoint has, which increases the cluster sizes. Since the algorithm is fairly fast, we can scan over multiple resolutions fairly quickly to build a multiresolution cluster object.
 
 ```R
