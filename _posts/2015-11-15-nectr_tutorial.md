@@ -107,7 +107,7 @@ modGMM <- clsGMM(gmmSpec, alpha = 0.2, beta = 0.2)
 ```
 The model is fitted by standard EM, which took about 25 seconds for this example on my computer. The results are shown below; both the 5 fitted clusters, discovered using TURN, and described using the GMM, and in the second, the effect of filtering out low density observations as noise.
 
-<div style="text-align:center"><img src="https://github.com/spoonbill/spoonbill.github.io/blob/master/images/clustersGMM1.png" alt = "Gaussian Mixture Model Clustering" width="550"> <img src="https://github.com/spoonbill/spoonbill.github.io/blob/master/images/clustersGMM2.png" alt = Gaussian Mixture Model Noise Filtering"width="550"></div>
+<div style="text-align:center"><img src="https://github.com/spoonbill/spoonbill.github.io/blob/master/images/clustersGMM1.png" alt = "Gaussian Mixture Model Clustering" width="550"> <img src="https://github.com/spoonbill/spoonbill.github.io/blob/master/images/clustersGMM2.png" alt = Gaussian Mixture Model Noise Filtering" width="550"></div>
 
 
 <sup>1</sup> the GMM uses the MAP not MLE estimate.
