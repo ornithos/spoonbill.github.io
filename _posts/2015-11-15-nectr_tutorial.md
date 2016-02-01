@@ -26,14 +26,14 @@ We'll quickly explore the algorithm via a poky animation. A window on some 2D da
 
 The algorithm can be written to execute in `O(nlogn)` time, by partitioning the data into rows, sorting by column position, and obtaining horizontal neighbours. Vertical neighbours are discovered analogously. For higher dimensions, this process continues sequentially as sorts across each dimension. This may give you an insight into the effect of the curse of dimensionality on the algorithm: clearly this quantised approximation will perform poorly as the number of dimensions increase. It is only really recommended for `d < 10`.
 
-## Parsimonious model compression using the GMM.
+## Parsimonious model compression using the GMM
 While the non-parametric ideal is to be admired, there are many situations where it is simply impractical. Even mundane questions such as 'which cluster does my new datapoint belong to?' cannot be answered simply. It is even more difficult to quantify how central or otherwise a point is to its own cluster. For the customer segmentation case we also probably want to assign even outliers to their closest cluster. In order to help in these situations, a Gaussian Mixture Model has been implemented in the same package. It is integrated sufficiently well that the user need not know virtually anything about their construction. Because the exploratory work has already been performed, we know the number of clusters K, and the TURN clusters may be used as priors<sup>1</sup>. By selecting the strength of the prior, one can interpolate between the extremes of a mixture of Gaussians with mean and covariance of the TURN clusters, or simply an initialisation of the GMM from these cluster centers. Derivations of the MAP estimates are available in the repo.
 
 ## nectr: Non-Parametric Exploratory Clustering using TURN-RES
 
 These functions are bundled together in the R-package `nectr` and can be found [here](https://github.com/spoonbill/nectr). The following is a simple demonstration of the algorithm on some dummy data. First, some fake data:
 
-##### Create a 5 cluster fake dataset over 3 dimensions:
+#### Create a 5 cluster fake dataset over 3 dimensions:
 
 ```R
 library(MASS)
