@@ -21,7 +21,7 @@ We'll quickly explore the algorithm via a poky animation. A window on some 2D da
 + Quantize the dataset -- move each datapoint to the nearest point on the grid.
 + For each datapoint, consider the neighbours in all axis-aligned directions.
 + If sufficient neighbours exist, the datapoint is labelled an 'interior' point and may be connected to each of its neighbours.
-+ The union of all touching datapoints and their neighbours form a cluster.
++ The union of all neighbouring interior points and their (exterior) neighbours form a cluster.
 + The data is returned to the original non-quantised space, together with the cluster labels.
 
 The algorithm can be written to execute in `O(nlogn)` time, by partitioning the data into rows, sorting by column position, and obtaining horizontal neighbours. Vertical neighbours are discovered analogously. For higher dimensions, this process continues sequentially as sorts across each dimension. This may give you an insight into the effect of the curse of dimensionality on the algorithm: clearly this quantised approximation will perform poorly as the number of dimensions increase. It is only really recommended for `d < 10`.
@@ -107,8 +107,7 @@ modGMM <- clsGMM(gmmSpec, alpha = 0.2, beta = 0.2)
 ```
 The model is fitted by standard EM, which took about 25 seconds for this example on my computer. The results are shown below; both the 5 fitted clusters, discovered using TURN, and described using the GMM, and in the second, the effect of filtering out low density observations as noise.
 
-![alt text](https://github.com/spoonbill/spoonbill.github.io/blob/master/images/clustersGMM1.png "Gaussian Mixture Model Clustering")
-![alt text](https://github.com/spoonbill/spoonbill.github.io/blob/master/images/clustersGMM2.png "Gaussian Mixture Model Noise Filtering")
+<div style="text-align:center"><img src="https://github.com/spoonbill/spoonbill.github.io/blob/master/images/clustersGMM1.png" alt = "Gaussian Mixture Model Clustering" width="550"> <img src="https://github.com/spoonbill/spoonbill.github.io/blob/master/images/clustersGMM2.png" alt = Gaussian Mixture Model Noise Filtering"width="550"></div>
 
 
 <sup>1</sup> the GMM uses the MAP not MLE estimate.
