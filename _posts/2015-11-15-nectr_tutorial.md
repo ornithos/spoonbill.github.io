@@ -18,7 +18,7 @@ This observation motivated a more hands-on approach, whereby instead of an algor
 
 We'll quickly explore the algorithm via a poky animation. A window on some 2D data is shown below. The original data is shown in grey.
 
-![dead](https://github.com/spoonbill/spoonbill.github.io/tree/master/images/clsTurnRes.gif "steps of TURN-RES")
+![dead](/images/clsTurnRes.gif "steps of TURN-RES")
 
 + Impose a grid at the given resolution (this is the only parameter choice in the algorithm).
 + Quantize the dataset -- move each datapoint to the nearest point on the grid.
