@@ -32,6 +32,7 @@ The algorithm can be written to execute in `O(nlogn)` time, by partitioning the 
 ## Parsimonious model compression using the GMM
 While the non-parametric ideal is to be admired, there are many situations where it is simply impractical. Even mundane questions such as 'which cluster does my new datapoint belong to?' cannot be answered simply. It is even more difficult to quantify how central or otherwise a point is to its own cluster. For the customer segmentation case we also probably want to assign even outliers to their closest cluster. In order to help in these situations, a Gaussian Mixture Model has been implemented in the same package. It is integrated sufficiently well that the user need not know virtually anything about their construction. Because the exploratory work has already been performed, we know the number of clusters K, and the TURN clusters may be used as priors<sup>1</sup>. By selecting the strength of the prior, one can interpolate between the extremes of a mixture of Gaussians with mean and covariance of the TURN clusters, or simply an initialisation of the GMM from these cluster centers. Derivations of the MAP estimates are available in the repo.
 
+<br><br>
 --------------------------
 # nectr: Non-Parametric Exploratory Clustering using TURN-RES
 
@@ -120,7 +121,8 @@ The model is fitted by standard EM, which took about 25 seconds for this example
 
 ![final result](/images/clustersGMM_together.png "final result")
 
-
+<br>
+##### Footnotes:
 <sup>1</sup> the GMM uses the MAP not MLE estimate.
 
 <sup>2</sup> Gaussian distributions are notoriously sensitive to outliers, due to the double exponential decay of the density.
