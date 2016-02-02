@@ -1,7 +1,8 @@
 ---
 layout: post
-title: nectr: Exploratory Clustering
+title: nectr - Exploratory Clustering
 ---
+
 A number of years ago I spent some time researching density-based clustering algorithms for exploratory analysis. At the time I was hoping to understand the regions of high density in a dataset for customer segmentation. Of course k-means cannot be trusted with such a task; it may capture some elements of the underlying density, but it is just as possible that it has created a relatively arbitrary partition of the data. Further, if the true density is not given to spherical (or more accurately voronoi cell) clusters, then k-means will also fail as an accurate description of the data. And then of course the perennial question of choosing K.
 
 Parametric mixture models (most famously Gaussian Mixture Models) are more flexible with cluster shape, and confer various advantages against k-means, but I did not wish to assume any generating distribution. My experience of commercial data has not shown much evidence of any parametric distribution that I am familiar with. Various non-parametric alternatives exist such as DBSCAN or mean-shift, but these are highly sensitive to parameter specification, and higher dimensions suffer from quadratic time. Another approach is Spectral Clustering, using the graph Laplacian, but unless approximated is at least quadratic, and one must specify the number of clusters in advance. 
