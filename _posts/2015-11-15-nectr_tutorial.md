@@ -23,7 +23,7 @@ We'll quickly explore the algorithm via a poky animation. A window on some 2D da
 + Impose a grid at the given resolution (this is the only parameter choice in the algorithm).
 + Quantize the dataset -- move each datapoint to the nearest point on the grid.
 + For each datapoint, consider the neighbours in all axis-aligned directions.
-+ If sufficient neighbours exist, the datapoint is labelled an 'interior' point and may be connected to each of its neighbours.
++ If sufficient neighbours exist, the datapoint is labelled an 'interior' point (shown here in red) and may be connected to each of its neighbours.
 + The union of all neighbouring interior points and their (exterior) neighbours form a cluster.
 + The data is returned to the original non-quantised space, together with the cluster labels.
 
@@ -32,7 +32,8 @@ The algorithm can be written to execute in `O(nlogn)` time, by partitioning the 
 ## Parsimonious model compression using the GMM
 While the non-parametric ideal is to be admired, there are many situations where it is simply impractical. Even mundane questions such as 'which cluster does my new datapoint belong to?' cannot be answered simply. It is even more difficult to quantify how central or otherwise a point is to its own cluster. For the customer segmentation case we also probably want to assign even outliers to their closest cluster. In order to help in these situations, a Gaussian Mixture Model has been implemented in the same package. It is integrated sufficiently well that the user need not know virtually anything about their construction. Because the exploratory work has already been performed, we know the number of clusters K, and the TURN clusters may be used as priors<sup>1</sup>. By selecting the strength of the prior, one can interpolate between the extremes of a mixture of Gaussians with mean and covariance of the TURN clusters, or simply an initialisation of the GMM from these cluster centers. Derivations of the MAP estimates are available in the repo.
 
-## nectr: Non-Parametric Exploratory Clustering using TURN-RES
+--------------------------
+# nectr: Non-Parametric Exploratory Clustering using TURN-RES
 
 These functions are bundled together in the R-package `nectr` and can be found [here](https://github.com/spoonbill/nectr). The following is a simple demonstration of the algorithm on some dummy data. First, some fake data:
 
@@ -65,7 +66,7 @@ names(fakeData) <- c("X", "Y", "Z")
 
 We have also added some uniformly distributed noise to make the problem slightly more challenging. The dataset is shown below - we have n = 600,000 datapoints (not all shown!), and d = 3 dimensions.
 
-<div style="text-align:center"><img src="https://github.com/spoonbill/spoonbill.github.io/blob/master/images/clusters2.png" width="450"> <img src="https://github.com/spoonbill/spoonbill.github.io/blob/master/images/clusters1.png" width="450"></div>
+![fake data](/images/clusters_together.png "fake data")
 
 #### Tuning the resolution parameter:
 The core algorithm TURN-RES requires one parameter - the quantization resolution. The lower the resolution, the more neighbours a datapoint has, which increases the cluster sizes. As discussed above, searching for the optimal resolution is not automated, but the `clsMRes` function scans through some likely values in advance for you:
@@ -79,6 +80,7 @@ The clsMRes function iteratively reduces the resolution until no clusters are vi
 
 #### Exploring the results
 Inspection the agglomeration schedule, that is, how the clusters agglomerate as the scale is increased:
+
 ```R
 plot(multires)
 ```
@@ -87,6 +89,7 @@ plot(multires)
 The clusters are plotted in order of increasing resolution on the x axis. In this example, 5 clusters were found in the first run of TURN with resolution r = 0.102, numbered 1:5. Five (larger) clusters were discovered with the next resolution of r = 0.144, and the agglomeration schedule shows the clusters which are merged into a superset of themselves - for example cluster 6 is a superset of cluster 1. At the next iteration, clusters 6, 9 and 10 are merged into cluster 12. And so on.
 
 Plotting selected clusters selected clusters of the agglomeration:
+
 ```R
 plot(multires, c(8,12,13))
 ```
@@ -101,16 +104,18 @@ The parallel coordinate plots are a sample of the points belonging to each clust
 
 #### Creating the summary GMM model
 The function `clsSpecifyModel` takes as arguments the multiresolution object created by `clsMRes`, the cluster numbers which we wish to keep in the GMM model (again these do not have to be from the same resolution level), and the estimated percentage of noise. The GMM will use the specified clusters as priors, and if a `noise.pct` is specified, an additional large variance noise cluster is admitted into the GMM to prevent outliers skewing the results<sup>2</sup>.
+
 ```R
 gmmSpec <- clsSpecifyModel(multires, clusters = 6:10, noise.pct = 0.1)
 ```
 Now we have specified the model, we must fit it. The following function takes the model as an argument, and `alpha`, `beta`, which are the strength of the priors used. These are scaled such that each prior strength should be specified in the interval `[0,1]`. `0` allows the GMM fit complete freedom in fitting, and the resulting model may look very different from the TURN model, at the other extreme, using `1` will simply return the covariance and means of the existing TURN clusters. Any value in the middle is a trade off between these objectives, and below we have used `0.2`. Different values may be specified for each cluster if desired.
+
 ```R
 modGMM <- clsGMM(gmmSpec, alpha = 0.2, beta = 0.2)
 ```
 The model is fitted by standard EM, which took about 25 seconds for this example on my computer. The results are shown below; both the 5 fitted clusters, discovered using TURN, and described using the GMM, and in the second, the effect of filtering out low density observations as noise.
 
-<div style="text-align:center"><img src="https://github.com/spoonbill/spoonbill.github.io/blob/master/images/clustersGMM1.png" alt = "Gaussian Mixture Model Clustering" width="550"> <img src="https://github.com/spoonbill/spoonbill.github.io/blob/master/images/clustersGMM2.png" alt = Gaussian Mixture Model Noise Filtering" width="550"></div>
+![final result](/images/clustersGMM_together.png "final result")
 
 
 <sup>1</sup> the GMM uses the MAP not MLE estimate.
