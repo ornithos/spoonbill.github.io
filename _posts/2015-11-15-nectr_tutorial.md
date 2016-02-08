@@ -110,9 +110,9 @@ plot(multires,6:10)
 ![alt text](/images/pcp_6_10.png "Parallel Coordinate Plot")
 
 Here we see 5 distinct clusters, and indeed the plots have very similar means to those specified by our dataset generation code. At this stage we may decide that 5 is a good choice for K (the number of clusters), and for each cluster choose the highest level that it is not agglomerated with another. Further calls to TURN-RES with user-defined resolutions may be necessary, which can be called via: 
-'''R
+```R
 modelTurnRes <- clsTurnRes(data, r= ...)
-'''
+```
 where the resolution is specified by `r=...`. Good values may be estimated given those already used in the printout from `clsMres(...)`. Sometimes we may wish to stop here.
 
 
